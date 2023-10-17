@@ -33,7 +33,6 @@ class MyToolWindowFactory : ToolWindowFactory {
 
         fun getContent() = JBPanel<JBPanel<*>>().apply {
             val label = JBLabel(MyBundle.message("randomLabel", "?"))
-
             add(label)
             add(JButton(MyBundle.message("shuffle")).apply {
                 addActionListener {
