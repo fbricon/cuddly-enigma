@@ -92,7 +92,6 @@ jobs:
           ./gradlew patchChangelog --release-note="$CHANGELOG"
 
       - name: Publish Plugin
-        environment: release
         env:
           PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
           PLUGIN_VERSION: ${{  steps.properties.outputs.plugin.version }}
