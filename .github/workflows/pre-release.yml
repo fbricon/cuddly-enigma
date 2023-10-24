@@ -69,9 +69,9 @@ jobs:
         id: properties
         shell: bash
         run: |
-          TIMESTAMPED_PLUGIN_VERSION = $(./get_timestamp_version.sh)
+          TIMESTAMPED_PLUGIN_VERSION=$(./get_timestamp_version.sh)
           echo "plugin.version<<EOF" >> $GITHUB_OUTPUT
-          echo "TIMESTAMPED_PLUGIN_VERSION" >> $GITHUB_OUTPUT
+          echo "$TIMESTAMPED_PLUGIN_VERSION" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
           
           CHANGELOG="$(cat << 'EOM' | sed -e 's/^[[:space:]]*$//g' -e '/./,$!d'
