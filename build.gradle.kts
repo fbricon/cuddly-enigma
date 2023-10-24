@@ -45,10 +45,12 @@ sourceSets {
         java.srcDir("intellij-community/platform/external-system-impl/testSrc")
         java.srcDir("intellij-community/platform/lang-impl/testSources")
         java.srcDir("intellij-community/platform/testFramework/extensions/src")
+        java.srcDir("intellij-community/plugins/gradle/src")
         java.srcDir("intellij-community/plugins/gradle/testSources")
         java.srcDir("intellij-community/plugins/gradle/tooling-extension-impl/testSources")
         java.srcDir("intellij-community/plugins/maven/src/test/java")
-        resources.srcDir(file("src/test/resources"))
+        java.srcDir("intellij-community/plugins/maven/testFramework/src")
+        resources.srcDir("src/test/resources")
     }
 
     create("integrationTest") {
