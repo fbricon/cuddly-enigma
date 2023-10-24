@@ -61,6 +61,8 @@ jobs:
 
       # Publish the plugin to JetBrains Marketplace
       - name: Publish Plugin
+        if: "github.event.release.prerelease"
+        environment: release
         env:
           PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
           # No signing from Github Actions at this point
