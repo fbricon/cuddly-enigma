@@ -70,7 +70,7 @@ jobs:
         shell: bash
         run: |
           TIMESTAMPED_PLUGIN_VERSION=$(./get_timestamp_version.sh)
-          echo "plugin.version<<EOF" >> $GITHUB_OUTPUT
+          echo "plugin_version<<EOF" >> $GITHUB_OUTPUT
           echo "$TIMESTAMPED_PLUGIN_VERSION" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
           
@@ -94,7 +94,7 @@ jobs:
       - name: Publish Plugin
         env:
           PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
-          PLUGIN_VERSION: ${{  steps.properties.outputs.plugin.version }}
+          PLUGIN_VERSION: ${{  steps.properties.outputs.plugin_version }}
           # No signing from Github Actions at this point
           # CERTIFICATE_CHAIN: ${{ secrets.CERTIFICATE_CHAIN }}
           # PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
