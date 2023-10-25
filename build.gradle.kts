@@ -192,7 +192,8 @@ tasks {
     }
 
     runPluginVerifier {
-        failureLevel = RunPluginVerifierTask.FailureLevel.NONE
+        failureLevel = listOf(RunPluginVerifierTask.FailureLevel.INVALID_PLUGIN)
+        verificationReportsFormats = listOf(RunPluginVerifierTask.VerificationReportsFormats.MARKDOWN, RunPluginVerifierTask.VerificationReportsFormats.HTML)
     }
 
     patchPluginXml {
