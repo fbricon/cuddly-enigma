@@ -75,7 +75,7 @@ jobs:
           IDE_MATRIX=$(cat build/listProductsReleases.txt | tr '\n' ',')
           # Remove the trailing comma
           IDE_MATRIX=${IDE_MATRIX%,}
-          echo "ide_matrix=${IDE_MATRIX} >> $GITHUB_OUTPUT
+          echo "ide_matrix=$IDE_MATRIX" >> $GITHUB_OUTPUT
 
       # Build plugin
       - name: Build plugin
