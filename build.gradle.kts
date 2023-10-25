@@ -66,7 +66,7 @@ sourceSets {
 dependencies {
     implementation("org.zeroturnaround:zt-zip:1.14")
     implementation("com.kotcrab.remark:remark:1.2.0")
-    implementation("org.jsoup:jsoup:1.14.2")
+    implementation("org.jsoup:jsoup:1.16.2")
     implementation("io.quarkus:quarkus-core:$quarkusVersion") {
         isTransitive = false
     }
