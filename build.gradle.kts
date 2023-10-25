@@ -88,7 +88,7 @@ dependencies {
     implementation("org.eclipse.lsp4mp:org.eclipse.lsp4mp.ls:$lsp4mpVersion")
     implementation("org.eclipse.lsp4j:org.eclipse.lsp4j:0.15.0")
     // Required by lsp4j as the version from IJ is incompatible
-    implementation("com.google.code.gson:gson:2.8.9")
+    implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.vladsch.flexmark:flexmark:0.62.2")
     lsp("org.eclipse.lsp4mp:org.eclipse.lsp4mp.ls:$lsp4mpVersion:uber") {
         isTransitive = false
