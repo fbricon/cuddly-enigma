@@ -71,6 +71,12 @@ jobs:
 
           ./gradlew listProductsReleases # prepare list of IDEs for Plugin Verifier
 
+          # Read matrix values from the file and convert them to comma-separated format
+          IDE_MATRIX=$(cat build/listProductsReleases.txt | tr '\n' ',')
+          # Remove the trailing comma
+          IDE_MATRIX=${IDE_MATRIX%,}
+          echo "ide_matrix=${IDE_MATRIX} >> $GITHUB_OUTPUT
+
       # Build plugin
       - name: Build plugin
         run: ./gradlew buildPlugin
@@ -175,6 +181,9 @@ jobs:
     name: Verify plugin
     needs: [ build ]
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        IJ: ${{ needs.build.outputs.ide_matrix }}
     steps:
 
       # Free GitHub Actions Environment Disk Space
@@ -211,7 +220,7 @@ jobs:
       # Run Verify Plugin task and IntelliJ Plugin Verifier tool
       - name: Run Plugin Verification tasks
         run: |
-          ./gradlew runPluginVerifier -Dplugin.verifier.home.dir=${{ needs.build.outputs.pluginVerifierHomeDir }}
+          ./gradlew runPluginVerifier -PideaVersion=${{ matrix.IJ }} -Dplugin.verifier.home.dir=${{ needs.build.outputs.pluginVerifierHomeDir }}
           REPORTS=$(cat ${{ github.workspace }}/build/reports/pluginVerifier/*/report.md | sed 's/^#/##/')
           echo "$REPORTS" >> $GITHUB_STEP_SUMMARY
 

@@ -1,6 +1,7 @@
 import com.adarshr.gradle.testlogger.theme.ThemeType
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
+import org.jetbrains.intellij.or
 import org.jetbrains.intellij.tasks.RunPluginVerifierTask.VerificationReportsFormats.*
 import org.jetbrains.intellij.tasks.RunPluginVerifierTask.FailureLevel.*
 
@@ -25,7 +26,7 @@ val quarkusVersion = prop("quarkusVersion")
 val lsp4mpVersion = prop("lsp4mpVersion")
 val quarkusLsVersion = prop("lsp4mpVersion")
 val quteLsVersion = prop("quteLsVersion")
-
+val ideaVersion = prop("ideaVersion").or(prop("platformType")+"-"+prop("platformVersion"))
 // Configure project's dependencies
 repositories {
     mavenLocal()
@@ -121,9 +122,10 @@ kotlin {
 
 // Configure Gradle IntelliJ Plugin - read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
+    val ideaBits = ideaVersion.split("-")
     pluginName = properties("pluginName")
-    version = properties("platformVersion")
-    type = properties("platformType")
+    type = ideaBits.get(0)
+    version = ideaBits.get(1)
     updateSinceUntilBuild = false
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
     plugins = properties("platformPlugins").map { it.split(',').map(String::trim).filter(String::isNotEmpty) }
@@ -194,6 +196,7 @@ tasks {
     }
 
     runPluginVerifier {
+        ideVersions = listOf(ideaVersion)
         failureLevel = listOf(INVALID_PLUGIN, COMPATIBILITY_PROBLEMS, MISSING_DEPENDENCIES )
         verificationReportsFormats = listOf(MARKDOWN, HTML)
     }
