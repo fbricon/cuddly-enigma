@@ -1,7 +1,9 @@
 import com.adarshr.gradle.testlogger.theme.ThemeType
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
-import org.jetbrains.intellij.tasks.RunPluginVerifierTask
+import org.jetbrains.intellij.tasks.RunPluginVerifierTask.VerificationReportsFormats.*
+import org.jetbrains.intellij.tasks.RunPluginVerifierTask.FailureLevel.*
+
 
 fun properties(key: String) = providers.gradleProperty(key)
 fun environment(key: String) = providers.environmentVariable(key)
@@ -192,8 +194,8 @@ tasks {
     }
 
     runPluginVerifier {
-        failureLevel = listOf(RunPluginVerifierTask.FailureLevel.INVALID_PLUGIN)
-        verificationReportsFormats = listOf(RunPluginVerifierTask.VerificationReportsFormats.MARKDOWN, RunPluginVerifierTask.VerificationReportsFormats.HTML)
+        failureLevel = listOf(INVALID_PLUGIN, COMPATIBILITY_PROBLEMS, MISSING_DEPENDENCIES )
+        verificationReportsFormats = listOf(MARKDOWN, HTML)
     }
 
     patchPluginXml {
