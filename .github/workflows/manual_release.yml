@@ -1,8 +1,4 @@
-# GitHub Actions Workflow created for handling the release process based on the draft release prepared with the Build workflow.
-# Running the publishPlugin task requires all following secrets to be provided: PUBLISH_TOKEN, PRIVATE_KEY, PRIVATE_KEY_PASSWORD, CERTIFICATE_CHAIN.
-# See https://plugins.jetbrains.com/docs/intellij/plugin-signing.html for more information.
-
-name: Manual Release
+name: Release Plugin to Marketplace
 
 #Only one job at a time
 concurrency: release
@@ -77,9 +73,32 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          PLUGIN_VERSION=$(./increment_version.sh)
-          echo "Set $PLUGIN_VERSION in gradle.properties"
-          git config user.email "action@github.com"
-          git config user.name "GitHub Action"
-          git commit -sam "chore(skip-release): set version to $PLUGIN_VERSION"
+          NEW_VERSION=$(./increment_version.sh)
+          echo "Set $NEW_VERSION in gradle.properties"
+          git commit -sam "chore(skip-release): set version to $NEW_VERSION"
           git push origin main
+
+      - name: Simple conventional changelog
+        uses: lstocchi/simple-conventional-changelog@13071c09073f5deddf03d44d9af6a8b0f81ef227 #0.0.11
+        id: changelog
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          current-tag: ${{env.PLUGIN_VERSION}}
+          types-mapping: 'feat:Features,fix:Bug Fixes,docs:Documentation,refactor:Refactoring,chore:Other'
+
+      # Create a new Github release
+      - name: Create Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create ${PLUGIN_VERSION} \
+            --title "${PLUGIN_VERSION}" \
+            --notes "$(cat << 'EOM'
+          ${{ steps.changelog.outputs.changelog }}
+          EOM
+          )"
+
+      - name: Upload Release Asset
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${PLUGIN_VERSION} ./build/distributions/*
