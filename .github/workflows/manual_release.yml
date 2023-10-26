@@ -86,12 +86,6 @@ jobs:
           git tag $PLUGIN_VERSION
           git push origin $PLUGIN_VERSION
 
-      # Upload artifact as a release asset
-      - name: Upload Release Asset
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload $PLUGIN_VERSION ./build/distributions/*
-
       # Set next SNAPSHOT version
       - name: Increment version
         env:
