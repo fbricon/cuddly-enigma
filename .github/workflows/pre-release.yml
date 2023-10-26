@@ -88,8 +88,9 @@ jobs:
         if: ${{ steps.properties.outputs.changelog != '' }}
         env:
           CHANGELOG: ${{ steps.properties.outputs.changelog }}
+          PLUGIN_VERSION: ${{ steps.properties.outputs.plugin_version }}
         run: |
-          ./gradlew patchChangelog --release-note="$CHANGELOG"
+          ./gradlew patchChangelog -PpluginVersion=${PLUGIN_VERSION} --release-note="$CHANGELOG"
 
       - name: Publish Plugin
         env:
