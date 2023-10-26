@@ -68,8 +68,7 @@ jobs:
           PLUGIN_VERSION=$(./set_release_version.sh)
           echo "Release version: $PLUGIN_VERSION"
           
-          echo "${PLUGIN_VERSION}-SNAPSHOT" >> $GITHUB_ENV
-          echo "plugin_version=$PLUGIN_VERSION" >> $GITHUB_OUTPUT
+          echo "PLUGIN_VERSION=${PLUGIN_VERSION}-SNAPSHOT" >> $GITHUB_ENV
           
           git commit -sam "chore(skip-release): set version to $PLUGIN_VERSION"
           git push --set-upstream origin main
