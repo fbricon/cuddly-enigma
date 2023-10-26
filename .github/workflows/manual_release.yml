@@ -3,6 +3,10 @@
 # See https://plugins.jetbrains.com/docs/intellij/plugin-signing.html for more information.
 
 name: Manual Release
+
+#Only one job at a time
+concurrency: release
+
 on:
   workflow_dispatch:
     inputs:
@@ -16,17 +20,15 @@ on:
         default: 'false'
 
 jobs:
-
   # Prepare and publish the plugin to JetBrains Marketplace repository
   release:
     if: ${{ inputs.publishToMarketPlace == 'true'}}
-    name: Publish Plugin
+    name: Publish plugin to default channel
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
     steps:
-
       # Check out current repository
       - name: Fetch Sources
         uses: actions/checkout@v4
@@ -44,44 +46,28 @@ jobs:
         with:
           gradle-home-cache-cleanup: true
 
-      # Set environment variables
-      - name: Export Properties
-        id: properties
-        shell: bash
-        run: |
-          CHANGELOG="$(cat << 'EOM' | sed -e 's/^[[:space:]]*$//g' -e '/./,$!d'
-          ${{ github.event.release.body }}
-          EOM
-          )"
-          
-          echo "changelog<<EOF" >> $GITHUB_OUTPUT
-          echo "$CHANGELOG" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-          
-          git config user.email "action@github.com"
-          git config user.name "GitHub Action"
-
       - name: Set release version
         id: release_version
         shell: bash
         run: |
           PLUGIN_VERSION=$(./set_release_version.sh)
           echo "Release version: $PLUGIN_VERSION"
-          
-          echo "PLUGIN_VERSION=${PLUGIN_VERSION}-SNAPSHOT" >> $GITHUB_ENV
+          echo "PLUGIN_VERSION=${PLUGIN_VERSION}" >> $GITHUB_ENV
 
       # Publish the plugin to JetBrains Marketplace
       - name: Publish Plugin
         env:
           PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
         run: |
-          ./gradlew publishPlugin
+          ./gradlew publishPlugin -PpluginVersion=$PLUGIN_VERSION
           echo "Published $PLUGIN_VERSION to the Jetbrains Marketplace"
 
       - name: Tag release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          git config user.email "action@github.com"
+          git config user.name "GitHub Action"
           git commit -sam "chore(skip-release): set version to $PLUGIN_VERSION"
           git tag $PLUGIN_VERSION
           git push origin $PLUGIN_VERSION
