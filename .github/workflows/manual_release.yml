@@ -84,7 +84,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           current-tag: ${{env.PLUGIN_VERSION}}
-          types-mapping: 'feat:Features,fix:Bug Fixes,docs:Documentation,refactor:Refactoring,chore:Other'
+          types-mapping: 'feat:Features,fix:Bug Fixes,docs:Documentation,refactor:Refactoring,build:Build,chore:Other'
 
       # Create a new Github release
       - name: Create Github Release
