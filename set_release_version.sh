@@ -11,4 +11,4 @@ NEW_VERSION=${CURRENT_VERSION%-SNAPSHOT}
 # Update the gradle.properties file with the new version
 awk -v current="$CURRENT_VERSION" -v new="$NEW_VERSION" 'BEGIN {FS=OFS="="} $1 == "pluginVersion" { $2 = new }1' "$GRADLE_PROPERTIES_FILE" > tmpfile && mv tmpfile "$GRADLE_PROPERTIES_FILE"
 
-echo "Updated $GRADLE_PROPERTIES_FILE with the new version: $NEW_VERSION"
+echo $NEW_VERSION
