@@ -11,7 +11,7 @@ BASE_VERSION=$(echo "$CURRENT_VERSION" | awk -F'-' '{print $1}')
 
 # Replace any suffix following a hyphen with a timestamp in the format YYYYMMDD-HHmmSS
 TIMESTAMP=$(date +'%Y%m%d-%H%M%S')
-NEW_VERSION="${BASE_VERSION}-EAP-$TIMESTAMP"
+NEW_VERSION="${BASE_VERSION}-nightly-$TIMESTAMP"
 
 # Use awk to update the gradle.properties file
 awk -v new_version="$NEW_VERSION" '/pluginVersion=/{sub(/=.*/, "=" new_version)}1' "$GRADLE_PROPERTIES_FILE" > tmpfile && mv tmpfile "$GRADLE_PROPERTIES_FILE"

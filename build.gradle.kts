@@ -192,7 +192,7 @@ tasks.register<Copy>("copyDeps") {
 
 tasks {
     wrapper {
-        gradleVersion = properties("gradleVersion").get()
+        gradleVersion = prop("gradleVersion")
     }
 
     runPluginVerifier {
@@ -267,14 +267,7 @@ tasks {
         // The pluginVersion is based on the SemVer (https://semver.org) and supports pre-release labels, like 2.1.7-alpha.3
         // Specify pre-release label to publish the plugin in a custom Release Channel automatically. Read more:
         // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
-
-        //val releasedVersion = version.replace("-SNAPSHOT", "-eap");
-        //def isSnapshot = props['projectVersion'].contains('-SNAPSHOT')
-        //def version = isSnapshot?props['projectVersion'].replace('-SNAPSHOT', ".${env.BUILD_NUMBER}"):props['projectVersion'] + ".${env.BUILD_NUMBER}"
-        channels =
-            properties("pluginVersion").map { listOf(it.split('-').getOrElse(1) { "default" }.split('.').first()) }
-
-        //channels = releasedVersion.map { listOf(it.split('-').getOrElse(1) { "default" }.split('.').first()) }
+        channels = properties("pluginVersion").map { listOf(it.split('-').getOrElse(1) { "default" }.split('.').first()) }
     }
 
     check {
