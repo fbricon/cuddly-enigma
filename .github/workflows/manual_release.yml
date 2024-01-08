@@ -14,6 +14,11 @@ on:
           - 'true'
           - 'false'
         default: 'false'
+      branch:
+        description: 'Branch to release from'
+        required: false
+        default: 'main'
+        type: string
 
 jobs:
   # Prepare and publish the plugin to JetBrains Marketplace repository
@@ -28,6 +33,8 @@ jobs:
       # Check out current repository
       - name: Fetch Sources
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
 
       # Set up Java environment for the next steps
       - name: Setup Java
