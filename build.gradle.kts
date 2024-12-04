@@ -67,7 +67,7 @@ sourceSets {
 
 // Dependencies are managed with Gradle version catalog - read more: https://docs.gradle.org/current/userguide/platforms.html#sub:version-catalog
 dependencies {
-    implementation("org.zeroturnaround:zt-zip:1.14")
+    implementation("org.zeroturnaround:zt-zip:1.16")
     implementation("com.kotcrab.remark:remark:1.2.0")
     implementation("org.jsoup:jsoup:1.14.2")
     implementation("io.quarkus:quarkus-core:$quarkusVersion") {
