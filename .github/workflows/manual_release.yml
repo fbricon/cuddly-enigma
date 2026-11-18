@@ -86,7 +86,7 @@ jobs:
           git push origin main
 
       - name: Simple conventional changelog
-        uses: lstocchi/simple-conventional-changelog@13071c09073f5deddf03d44d9af6a8b0f81ef227 #0.0.11
+        uses: redhat-developer/simple-conventional-changelog@d1060338b82efbffd09263457a470151597aa8a0 #0.0.13
         id: changelog
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
